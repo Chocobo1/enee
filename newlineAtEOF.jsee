@@ -1,0 +1,22 @@
+#title = "Add newline at EOF"
+#tooltip = "Ensure there will be a newline at end-of-file"
+
+var totalLines = document.GetLines();
+var lastLine = document.GetLine(totalLines);
+if (lastLine.length !== 0) {
+    // save cursor position
+    var cursorPos = {
+        x: document.selection.GetActivePointX(eePosLogical),
+        y: document.selection.GetActivePointY(eePosLogical)
+    };
+    // suppress drawing on screen
+    Window.Redraw = false;
+    // add new line
+    document.selection.EndOfDocument();
+    document.selection.NewLine();
+    // trim indentation when 'Enable Auto Indent' is on
+    document.selection.SelectLine();
+    document.selection.Delete();
+    // restore cursor position
+    document.selection.SetActivePoint(eePosLogical, cursorPos.x, cursorPos.y);
+}
